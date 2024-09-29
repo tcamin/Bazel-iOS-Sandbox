@@ -1,0 +1,6 @@
+load("//:Modules/modules.bzl", "make_module")
+
+make_module(
+    name = "ModuleA",
+    sample_deps = ["//Modules/ModuleC"],
+)

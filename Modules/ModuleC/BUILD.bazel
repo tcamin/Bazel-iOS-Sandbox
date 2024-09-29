@@ -1,0 +1,5 @@
+load("//:Modules/modules.bzl", "make_module")
+
+make_module(
+    name = "ModuleC",
+)

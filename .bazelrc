@@ -1,0 +1,4 @@
+common:bzlmod --enable_bzlmod
+common --config=bzlmod
+
+build --apple_platform_type=ios

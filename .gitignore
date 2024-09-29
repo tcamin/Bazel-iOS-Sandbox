@@ -1,0 +1,11 @@
+*.xcodeproj/
+
+.DS_Store
+
+## Bazel
+/bazel-*
+
+# Ignore the `.build` folder that is created by running Swift package manager commands
+.build/
+
+*.bazel.lock
