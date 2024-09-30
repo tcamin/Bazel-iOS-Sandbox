@@ -12,8 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
 
         let foo = ModuleC.Foo()
-        let bar = ModuleC.ModuleCBar()
-        print(foo, bar)
+        print(foo)
 
         return true
     }

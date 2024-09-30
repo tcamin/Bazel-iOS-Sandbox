@@ -1,5 +1,4 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application", "ios_unit_test")
-load("@build_bazel_rules_swift//mixed_language:mixed_language_library.bzl", "mixed_language_library")
 load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
 load(
     "@rules_xcodeproj//xcodeproj:defs.bzl",
@@ -11,7 +10,7 @@ load(
 deployment_target = "15.0"
 
 def make_module(name, deps = [], sample_deps = []):
-    """Instantiate everything needed to create a new network sub-module.
+    """Adds a new submodule to the project.
 
     Args:
         name: the name of the submodule
@@ -86,31 +85,13 @@ def make_module(name, deps = [], sample_deps = []):
             deps = sample_app_deps,
         )
 
-    src_glob = native.glob(["Sources/**/*"])
-    clang_srcs = [x for x in src_glob if x.endswith(".swift") == False]
-    swift_srcs = [x for x in src_glob if x.endswith(".swift") == True]
-
-    hdrs = native.glob(["Sources/**/*.h"])
-
-    # Modules is not enabled if a custom module map is present even with
-    # `enable_modules` set to `True`. This forcibly enables it.
-    # See https://github.com/bazelbuild/bazel/blob/18d01e7f6d8a3f5b4b4487e9d61a6d4d0f74f33a/src/main/java/com/google/devtools/build/lib/rules/objc/CompilationSupport.java#L1280
-    copts = [
-        "-fmodules",
-        "-I$(GENDIR)/Modules",
-    ]
-
-    mixed_language_library(
+    swift_library(
         name = name,
         module_name = name,
-        clang_srcs = clang_srcs,
-        swift_srcs = swift_srcs,
-        enable_modules = True,
+        srcs = native.glob(["Sources/**/*.swift"]),
         visibility = ["//visibility:public"],
-        hdrs = hdrs,
         features = ["swift.propagate_generated_module_map"],
         deps = deps,
-        clang_copts = copts,
     )
 
     swift_library(
